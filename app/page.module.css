@@ -1,3 +1,19 @@
+/* Custom CSS, added after creating default NextJS app */
+
+.searchBar {
+  width: 30rem;
+  height: 3rem;
+  font-size: 1.5rem;
+}
+
+.searchButton {
+  height: 3rem;
+  font-size: 1.5rem;
+  padding: 0.4rem;
+}
+
+/***************************************************/
+
 .main {
   display: flex;
   flex-direction: column;
