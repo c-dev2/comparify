@@ -12,6 +12,11 @@
   padding: 0.4rem;
 }
 
+.productContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
 /***************************************************/
 
 .main {
@@ -144,6 +149,11 @@
 
 /* Mobile */
 @media (max-width: 700px) {
+
+  .productContainer {
+    flex-direction: column;
+  }
+
   .content {
     padding: 4rem;
   }

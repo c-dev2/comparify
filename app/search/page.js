@@ -3,12 +3,13 @@
 import Image from "next/image";
 import styles from "../page.module.css";
 import { useState } from 'react';
-import { fetchEbayProducts } from '../../lib/api';
+import { fetchBestBuyProducts, fetchEbayProducts } from '../../lib/api';
 
 export default function Home() {
 
   const [query, setQuery] = useState('');
-  const [products, setProducts] = useState([]);
+  const [ebayProducts, setEbayProducts] = useState([]);
+  const [bestBuyProducts, setBestBuyProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,9 +19,10 @@ export default function Home() {
     setError(null);
 
     try {
-      const results = await fetchEbayProducts(query);
-      setProducts(results);
-      console.log(products);
+      const ebayResults = await fetchEbayProducts(query);
+      const bestBuyResults = await fetchBestBuyProducts(query);
+      setEbayProducts(ebayResults);
+      setBestBuyProducts(bestBuyResults);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -37,24 +39,36 @@ export default function Home() {
         </div>
         <div className={styles.center}>
           <form onSubmit={handleSearch}>
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search to start saving today!" className={styles.searchBar}/>
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search to start saving today!" className={styles.searchBar} />
             <button type="submit" className={styles.searchButton}>Search</button>
           </form>
         </div>
-  
+
         {/* Display products */}
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p>{error}</p>
         ) : (
-          <div>
-            {products.map((product, index) => (
-              <div key={index}>
-                <h2>{product.name}</h2>
-                <p>Price: {product.price}</p>
-              </div>
-            ))}
+          <div className={styles.productContainer}>
+            <div>
+              <h2>eBay Products</h2>
+              {ebayProducts.map((product, index) => (
+                <div key={index}>
+                  <h3>{product.name}</h3>
+                  <p>Price: {product.price}</p>
+                </div>
+              ))}
+            </div>
+            <div>
+              <h2>BestBuy Products</h2>
+              {bestBuyProducts.map((product, index) => (
+                <div key={index}>
+                  <h3>{product.name}</h3>
+                  <p>Price: {product.price}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
