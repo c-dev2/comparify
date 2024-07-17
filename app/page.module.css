@@ -4,6 +4,17 @@
   width: 30rem;
   height: 3rem;
   font-size: 1.5rem;
+  position: relative;
+  z-index: 1; 
+}
+
+.productHeading {
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+
+.product {
+  margin-bottom: 20px;
 }
 
 .searchButton {
@@ -15,7 +26,40 @@
 .productContainer {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
+
+.ebaySection {
+  background-color: #86c817; /* eBay's green color */
+  color: #333; /* Dark text for better contrast */
+  border: 1px solid #000; /* Black border */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* More padding */
+  margin-right: 20px; /* Add this line */
+  width: 100%;
+}
+
+.bestBuySection {
+  background-color: #0046be; /* BestBuy's blue color */
+  color: #fff; /* White text for better contrast */
+  border: 1px solid #003087; /* BestBuy's secondary color */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* More padding */
+  width: 100%;
+}
+
+@media (min-width: 768px) { /* Adjust this value as needed */
+  .ebaySection,
+  .bestBuySection {
+    width: calc(50% - 10px); /* Subtract the margin */
+  }
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}
+
 
 /***************************************************/
 

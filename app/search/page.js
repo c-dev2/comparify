@@ -1,13 +1,12 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import styles from "../page.module.css";
-import { useState } from 'react';
-import { fetchBestBuyProducts, fetchEbayProducts } from '../../lib/api';
+import { useState } from "react";
+import { fetchBestBuyProducts, fetchEbayProducts } from "../../lib/api";
 
 export default function Home() {
-
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [ebayProducts, setEbayProducts] = useState([]);
   const [bestBuyProducts, setBestBuyProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,6 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-
   };
 
   return (
@@ -39,8 +37,15 @@ export default function Home() {
         </div>
         <div className={styles.center}>
           <form onSubmit={handleSearch}>
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search to start saving today!" className={styles.searchBar} />
-            <button type="submit" className={styles.searchButton}>Search</button>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search to start saving today!"
+              className={styles.searchBar}
+            />
+            <button type="submit" className={styles.searchButton}>
+              Search
+            </button>
           </form>
         </div>
 
@@ -51,19 +56,31 @@ export default function Home() {
           <p>{error}</p>
         ) : (
           <div className={styles.productContainer}>
-            <div>
-              <h2>eBay Products</h2>
+            <div className={styles.ebaySection}>
+              <Image
+                src="/ebayLogo.jpg"
+                alt="eBay Logo"
+                width={250}
+                height={150}
+              />
+              <h2 className={styles.productHeading}>eBay Products</h2>
               {ebayProducts.map((product, index) => (
-                <div key={index}>
+                <div key={index} className={styles.product}>
                   <h3>{product.name}</h3>
                   <p>Price: {product.price}</p>
                 </div>
               ))}
             </div>
-            <div>
-              <h2>BestBuy Products</h2>
+            <div className={styles.bestBuySection}>
+              <Image
+                src="/bestBuyLogo.jpg"
+                alt="BestBuy Logo"
+                width={250}
+                height={150}
+              />
+              <h2 className={styles.productHeading}>BestBuy Products</h2>
               {bestBuyProducts.map((product, index) => (
-                <div key={index}>
+                <div key={index} className={styles.product}>
                   <h3>{product.name}</h3>
                   <p>Price: {product.price}</p>
                 </div>
