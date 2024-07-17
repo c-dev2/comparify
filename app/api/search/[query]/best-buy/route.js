@@ -14,7 +14,7 @@ export async function GET(req, { params }) {
     }
   }
 
-  const finalEndpoint = endpoint.concat(`)?format=json&show=name,salePrice&apiKey=${apiKey}`);
+  const finalEndpoint = endpoint.concat(`)?format=json&show=name,salePrice,url,image&pageSize=80&apiKey=${apiKey}`);
 
   try {
     const apiRes = await fetch(finalEndpoint);
@@ -28,7 +28,13 @@ export async function GET(req, { params }) {
         const products = data.products.map(product => ({
           name: product.name,
           price: product.salePrice,
+          url: product.url,
+          img: product.image
         }));
+
+        // Code acquire from https://stackoverflow.com/questions/979256/sorting-an-array-of-objects-by-property-values
+        // Sorts products by price in ascending order
+        products.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
 
     return NextResponse.json(products);
   } catch (error) {

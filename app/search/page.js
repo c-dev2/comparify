@@ -17,15 +17,17 @@ export default function Home() {
     setLoading(true);
     setError(null);
 
-    try {
-      const ebayResults = await fetchEbayProducts(query);
-      const bestBuyResults = await fetchBestBuyProducts(query);
-      setEbayProducts(ebayResults);
-      setBestBuyProducts(bestBuyResults);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if(query != null && query != " " && query != "") {
+      try {
+        const ebayResults = await fetchEbayProducts(query.trim());
+        const bestBuyResults = await fetchBestBuyProducts(query.trim());
+        setEbayProducts(ebayResults);
+        setBestBuyProducts(bestBuyResults);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -66,8 +68,9 @@ export default function Home() {
               <h2 className={styles.productHeading}>eBay Products</h2>
               {ebayProducts.map((product, index) => (
                 <div key={index} className={styles.product}>
-                  <h3>{product.name}</h3>
+                  <h3><a href={product.url}>{product.name}</a></h3>
                   <p>Price: {product.price}</p>
+                  <img src={product.img} alt="ebay_product_img" width="150" height="150"/> 
                 </div>
               ))}
             </div>
@@ -81,8 +84,9 @@ export default function Home() {
               <h2 className={styles.productHeading}>BestBuy Products</h2>
               {bestBuyProducts.map((product, index) => (
                 <div key={index} className={styles.product}>
-                  <h3>{product.name}</h3>
+                  <h3><a href={product.url}>{product.name}</a></h3>
                   <p>Price: {product.price}</p>
+                  <img src={product.img} alt="best_buy_product_img" width="150" height="150"/> 
                 </div>
               ))}
             </div>
