@@ -3,12 +3,13 @@
 import Image from "next/image";
 import styles from "../page.module.css";
 import { useState } from "react";
-import { fetchBestBuyProducts, fetchEbayProducts } from "../../lib/api";
+import { fetchAmazonProducts, fetchBestBuyProducts, fetchEbayProducts } from "../../lib/api";
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const [ebayProducts, setEbayProducts] = useState([]);
   const [bestBuyProducts, setBestBuyProducts] = useState([]);
+  const [amazonProducts, setAmazonProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,8 +22,10 @@ export default function Home() {
       try {
         const ebayResults = await fetchEbayProducts(query.trim());
         const bestBuyResults = await fetchBestBuyProducts(query.trim());
+        const amazonResults = await fetchAmazonProducts(query.trim());
         setEbayProducts(ebayResults);
         setBestBuyProducts(bestBuyResults);
+        setAmazonProducts(amazonResults);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -87,6 +90,22 @@ export default function Home() {
                   <h3><a href={product.url}>{product.name}</a></h3>
                   <p>Price: {product.price}</p>
                   <img src={product.img} alt="best_buy_product_img" width="150" height="150"/> 
+                </div>
+              ))}
+            </div>
+            <div className={styles.ebaySection}>
+              <Image
+                src="/amazonLogo.png"
+                alt="Amazon Logo"
+                width={250}
+                height={150}
+              />
+              <h2 className={styles.productHeading}>Amazon Products</h2>
+              {amazonProducts.map((product, index) => (
+                <div key={index} className={styles.product}>
+                  <h3><a href={product.url}>{product.name}</a></h3>
+                  <p>Price: {product.price}</p>
+                  <img src={product.img} alt="amazon_product_img" width="150" height="150"/> 
                 </div>
               ))}
             </div>
