@@ -70,8 +70,8 @@ export default function Home() {
               />
               <h2 className={styles.productHeading}>eBay Products</h2>
               {ebayProducts.map((product, index) => (
-                <div key={index} className={styles.product}>
-                  <h3><a href={product.url}>{product.name}</a></h3>
+                <div key={index} className={`${styles.product} ${styles.ebayProduct}`}>
+                  <h3><a href={product.url} target="_blank" rel="noopener noreferrer">{product.name}</a></h3>
                   <p>Price: {product.price}</p>
                   <img src={product.img} alt="ebay_product_img" width="150" height="150"/> 
                 </div>
@@ -86,8 +86,8 @@ export default function Home() {
               />
               <h2 className={styles.productHeading}>BestBuy Products</h2>
               {bestBuyProducts.map((product, index) => (
-                <div key={index} className={styles.product}>
-                  <h3><a href={product.url}>{product.name}</a></h3>
+                <div key={index} className={`${styles.product} ${styles.bestBuyProduct}`}>
+                  <h3><a href={product.url} target="_blank" rel="noopener noreferrer">{product.name}</a></h3>
                   <p>Price: {product.price}</p>
                   <img src={product.img} alt="best_buy_product_img" width="150" height="150"/> 
                 </div>
@@ -115,3 +115,4 @@ export default function Home() {
     </main>
   );
 }
+
