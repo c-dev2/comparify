@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
 
 export async function GET(req, { params }) {
-  const { query } = params;
+  const { query } = params; // Gets the user's query from the calling function in api.js
   const apiKey = process.env.AMAZON_KEY; // Use the environment variable
-  const endpoint = `https://real-time-amazon-data.p.rapidapi.com/search?query=${query}&page=1&country=CA&sort_by=LOWEST_PRICE&product_condition=ALL`;
+  // Amazon API endpoint
+  // This one is done through the "RapidAPI" website because the first-party Amazon API
+  // has too many requirements
+  // This one has a hard limit of 100 requests per month!! DO NOT MAKE TOO MANY SEARCHES!
+  // Docs: https://v2.rapidapi.com/letscrape-6bRBa3QguO5/api/real-time-amazon-data
+  const endpoint = `https://real-time-amazon-data.p.rapidapi.com/search?query=${query}&page=1&country=CA&sort_by=RELEVANCE&product_condition=ALL`;
+  // Adds our API key in the headers of this call
   const options = {
 	method: 'GET',
 	headers: {

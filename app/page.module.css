@@ -48,9 +48,19 @@
   width: 100%;
 }
 
+.amazonSection {
+  background-color: #d2b48c; /* Amazon's color */
+  color: #333; /* White text for better contrast */
+  border: 1px solid #000; /* Amazon's secondary color */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* More padding */
+  width: 100%;
+}
+
 @media (min-width: 768px) { /* Adjust this value as needed */
   .ebaySection,
-  .bestBuySection {
+  .bestBuySection,
+  .amazonSection {
     width: calc(50% - 10px); /* Subtract the margin */
   }
 }
@@ -74,8 +84,37 @@
   background-color: #0000CD; /* Light blue for BestBuy products */
 }
 
+.amazonProduct:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  cursor: pointer;
+  background-color: #bc9055; /* Dark tan for Amazon products */
+}
 
+/* CSS for buttons to navigate to each store's section */
 
+.scrollButtons {
+  position: fixed;
+  top: 50px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000; /* Ensures buttons are above other content */
+}
+
+.scrollButton {
+  padding: 0.5rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.scrollButton:hover {
+  background-color: #555;
+}
 
 
 /***************************************************/
