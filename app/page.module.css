@@ -1,11 +1,27 @@
 /* Custom CSS, added after creating default NextJS app */
 
+.searchContainer {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Align items vertically */
+  margin-top: 20px; /* Adjust top margin as needed */
+  margin-bottom: 20px;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
 .searchBar {
-  width: 30rem;
+  width: 100%;
+  max-width: 30rem; /* Maintain maximum width */
   height: 3rem;
   font-size: 1.5rem;
-  position: relative;
-  z-index: 1; 
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px; /* Rounded left corners */
+  z-index: 1;
 }
 
 .productHeading {
@@ -19,13 +35,18 @@
 
 .searchButton {
   height: 3rem;
-  font-size: 1.5rem;
-  padding: 0.4rem;
+  font-size: 1.5em;
+  padding: 0.4rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0 4px 4px 0; /* Rounded right corners */
+  background-color: #007bff; /* Blue button color */
+  color: #fff; /* White text color */
+  cursor: pointer;
 }
 
 .productContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
@@ -37,6 +58,7 @@
   padding: 20px; /* More padding */
   margin-right: 20px; /* Add this line */
   width: 100%;
+  text-align: center;
 }
 
 .bestBuySection {
@@ -46,28 +68,64 @@
   border-radius: 15px; /* Rounded corners */
   padding: 20px; /* More padding */
   width: 100%;
+  text-align: center;
 }
 
 .amazonSection {
   background-color: #d2b48c; /* Amazon's color */
-  color: #333; /* White text for better contrast */
+  color: #333; /* Dark grey text for better contrast */
   border: 1px solid #000; /* Amazon's secondary color */
   border-radius: 15px; /* Rounded corners */
   padding: 20px; /* More padding */
   width: 100%;
+  text-align: center;
 }
 
-@media (min-width: 768px) { /* Adjust this value as needed */
-  .ebaySection,
-  .bestBuySection,
-  .amazonSection {
-    width: calc(50% - 10px); /* Subtract the margin */
-  }
+.compareSection {
+  background-color: #212121; /* Comparison section's color */
+  color: #fff; /* White text for better contrast */
+  border: 1px solid #000; /* Amazon's secondary color */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* More padding */
+  width: 100%;
+  text-align: center;
+}
+
+.ebayCompare {
+  border: 3px solid #86c817;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.bestBuyCompare {
+  border: 3px solid #0046be;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.amazonCompare {
+  border: 3px solid #d2b48c;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.addButton {
+  padding: 0.15rem;
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  cursor: pointer;
 }
 
 .logo {
   width: 100px;
   height: auto;
+}
+
+.productImg {
+  width: 250px;
+  height: 200px;
+  object-fit: contain;
 }
 
 .ebayProduct:hover {
@@ -91,19 +149,26 @@
   background-color: #bc9055; /* Dark tan for Amazon products */
 }
 
+.compareProduct:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  cursor: pointer;
+  background-color: #0d0d0d; /* Even darker grey for products being compared */
+}
+
 /* CSS for buttons to navigate to each store's section */
 
 .scrollButtons {
   position: fixed;
-  top: 50px;
+  top: 120px; /* Adjust to avoid overlap with header */
   left: 20px;
   display: flex;
   flex-direction: column;
-  z-index: 1000; /* Ensures buttons are above other content */
+  z-index: 1000; /* Ensure buttons are above other content */
 }
 
 .scrollButton {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   background-color: #333;
   color: white;
   border: none;
@@ -116,6 +181,48 @@
   background-color: #555;
 }
 
+.scrollButtonImg {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+@media (max-width: 767px) { /* Target screens narrower than 768px */
+  .ebaySection,
+  .bestBuySection,
+  .amazonSection {
+    width: 100%; /* Full width on mobile */
+    margin-right: 0; /* Remove margin */
+    font-size: 0.75rem;
+  }
+
+  .scrollButtons {
+    position: fixed;
+    top: 20px; /* Adjust to avoid overlap with header */
+    left: 0;
+    right: 0;
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Align items vertically */
+    z-index: 1000; /* Ensure buttons are above other content */
+    padding: 10px; /* Add padding to prevent cutoff */
+  }
+
+  .scrollButton {
+    margin: 0 5px;
+  }
+
+  .searchBar {
+    font-size: 1.25rem;
+  }
+
+  .searchButton {
+    font-size: 1.25rem;
+    border-radius: 4px;
+  }
+}
 
 /***************************************************/
 

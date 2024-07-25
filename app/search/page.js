@@ -9,13 +9,15 @@ export default function Home() {
   // React states for the search query.
   // There's one for the user's query, the 3 APIs/stores,
   // one for the "loading" status (if the products are still being retrieved from the API),
-  // and one for any error messages.
+  // one for any error messages,
+  // and one for storing the products that the user wants to compare more directly.
   const [query, setQuery] = useState("");
   const [ebayProducts, setEbayProducts] = useState([]);
   const [bestBuyProducts, setBestBuyProducts] = useState([]);
   const [amazonProducts, setAmazonProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   // This function handles the search query
   const handleSearch = async (e) => {
@@ -42,6 +44,22 @@ export default function Home() {
     }
   };
 
+  // Handles adding prodcuts to the "selectedProducts" array so that they can be compared more directly
+  // by the user. This array can be thought of like a custom sublist that the user creates
+  // from the results of the 3 APIs.
+  // The product's URL is used as the key or ID.
+  const toggleProductSelection = (product, source) => {
+    // Checks if product has been added already
+    const selectedIndex = selectedProducts.findIndex((p) => p.url === product.url);
+
+    // If product is not in the array, add it. Otherwise, remove it.
+    if (selectedIndex === -1) {
+      setSelectedProducts([...selectedProducts, { ...product, source }]);
+    } else {
+      setSelectedProducts(selectedProducts.filter((p) => p.url !== product.url));
+    }
+  };
+
   // Function to scroll to a specific store's section when that store's button is clicked in the top left
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
@@ -57,14 +75,14 @@ export default function Home() {
         <div className={styles.center}>
           <h1>Comparify</h1>
         </div>
-        <div className={styles.center}> 
+        <div className={styles.searchContainer}>
 
           {/* Form to submit queries. This is the search bar */}
-          <form onSubmit={handleSearch}>
+          <form onSubmit={handleSearch} className={styles.searchForm}>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search to start saving today!"
+              placeholder="Search products here!"
               className={styles.searchBar}
             />
             <button type="submit" className={styles.searchButton}>
@@ -92,11 +110,21 @@ export default function Home() {
                 height={150}
               />
               <h2 className={styles.productHeading}>eBay Products</h2>
+              {/* Each product retrieved from each retailer displays the product name, price, image,
+              and has a URL linking directly to that product's web page on its respective retailer's site. */}
               {ebayProducts.map((product, index) => (
                 <div key={index} className={`${styles.product} ${styles.ebayProduct}`}>
                   <h3><a href={product.url} target="_blank" rel="noopener noreferrer">{product.name}</a></h3>
                   <p>Price: {product.price}</p>
-                  <img src={product.img} alt="ebay_product_img" width="150" height="150" />
+                  <img src={product.img} alt="ebay_product_img" className={styles.productImg} />
+                  {/* Below button exists for each product retrieved from each retailer.
+                  If clicked, adds this product to the "selectedProducts" array.
+                  If clicked again, removes it from that array. */}
+                  <button className={styles.addButton} onClick={() => toggleProductSelection(product, 'eBay')}>
+                    {selectedProducts.some((p) => p.url === product.url && p.source === 'eBay')
+                      ? 'Remove from Comparison'
+                      : 'Add to Comparison'}
+                  </button>
                 </div>
               ))}
             </div>
@@ -112,7 +140,12 @@ export default function Home() {
                 <div key={index} className={`${styles.product} ${styles.bestBuyProduct}`}>
                   <h3><a href={product.url} target="_blank" rel="noopener noreferrer">{product.name}</a></h3>
                   <p>Price: {product.price}</p>
-                  <img src={product.img} alt="best_buy_product_img" width="150" height="150" />
+                  <img src={product.img} alt="best_buy_product_img" className={styles.productImg} />
+                  <button className={styles.addButton} onClick={() => toggleProductSelection(product, 'BestBuy')}>
+                    {selectedProducts.some((p) => p.url === product.url && p.source === 'BestBuy')
+                      ? 'Remove from Comparison'
+                      : 'Add to Comparison'}
+                  </button>
                 </div>
               ))}
             </div>
@@ -128,9 +161,73 @@ export default function Home() {
                 <div key={index} className={`${styles.product} ${styles.amazonProduct}`}>
                   <h3><a href={product.url}>{product.name}</a></h3>
                   <p>Price: {product.price}</p>
-                  <img src={product.img} alt="amazon_product_img" width="150" height="150" />
+                  <img src={product.img} alt="amazon_product_img" className={styles.productImg} />
+                  <button className={styles.addButton} onClick={() => toggleProductSelection(product, 'Amazon')}>
+                    {selectedProducts.some((p) => p.url === product.url && p.source === 'Amazon')
+                      ? 'Remove from Comparison'
+                      : 'Add to Comparison'}
+                  </button>
                 </div>
               ))}
+            </div>
+            {/* Compare Section to show all the products that the user wants compared
+            from the "selectedProducts" array. Separated by retailer. */}
+            <div id="compareSection" className={styles.compareSection}>
+              <h2 className={styles.productHeading}>Comparison</h2>
+              <div className={styles.ebayCompare}>
+                {selectedProducts.filter((product) => product.source === 'eBay').map((product, index) => (
+                  <div key={index} className={`${styles.product} ${styles.compareProduct}`}>
+                    <h3>
+                      <a href={product.url} target="_blank" rel="noopener noreferrer">
+                        {product.name}
+                      </a>
+                    </h3>
+                    <p>Price: {product.price}</p>
+                    <img src={product.img} alt="ebay_product_img" className={styles.productImg} />
+                    <button className={styles.addButton} onClick={() => toggleProductSelection(product, 'eBay')}>
+                    {selectedProducts.some((p) => p.url === product.url && p.source === 'eBay')
+                      ? 'Remove from Comparison'
+                      : 'Add to Comparison'}
+                  </button>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.bestBuyCompare}>
+                {selectedProducts.filter((product) => product.source === 'BestBuy').map((product, index) => (
+                  <div key={index} className={`${styles.product} ${styles.compareProduct}`}>
+                    <h3>
+                      <a href={product.url} target="_blank" rel="noopener noreferrer">
+                        {product.name}
+                      </a>
+                    </h3>
+                    <p>Price: {product.price}</p>
+                    <img src={product.img} alt="best_buy_product_img" className={styles.productImg} />
+                    <button className={styles.addButton} onClick={() => toggleProductSelection(product, 'BestBuy')}>
+                    {selectedProducts.some((p) => p.url === product.url && p.source === 'BestBuy')
+                      ? 'Remove from Comparison'
+                      : 'Add to Comparison'}
+                  </button>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.amazonCompare}>
+                {selectedProducts.filter((product) => product.source === 'Amazon').map((product, index) => (
+                  <div key={index} className={`${styles.product} ${styles.compareProduct}`}>
+                    <h3>
+                      <a href={product.url} target="_blank" rel="noopener noreferrer">
+                        {product.name}
+                      </a>
+                    </h3>
+                    <p>Price: {product.price}</p>
+                    <img src={product.img} alt="amazon_product_img" className={styles.productImg} />
+                    <button className={styles.addButton} onClick={() => toggleProductSelection(product, 'Amazon')}>
+                    {selectedProducts.some((p) => p.url === product.url && p.source === 'Amazon')
+                      ? 'Remove from Comparison'
+                      : 'Add to Comparison'}
+                  </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -139,24 +236,26 @@ export default function Home() {
         <div className={styles.scrollButtons}>
           <button
             className={styles.scrollButton}
-            onClick={() => scrollToSection("ebaySection")}
+            onClick={() => scrollToSection("eBaySection")}
           >
-            eBay Products
+            <img src="/ebayLogo.jpg" className={styles.scrollButtonImg} />
           </button>
           <button
             className={styles.scrollButton}
             onClick={() => scrollToSection("bestBuySection")}
           >
-            BestBuy Products
+            <img src="/bestBuyLogo.jpg" className={styles.scrollButtonImg} />
           </button>
           <button
             className={styles.scrollButton}
             onClick={() => scrollToSection("amazonSection")}
           >
-            Amazon Products
+            <img src="/amazonLogo.png" className={styles.scrollButtonImg} />
+          </button>
+          <button onClick={() => scrollToSection("compareSection")} className={styles.scrollButton}>
+            Compare
           </button>
         </div>
-
       </div>
     </main>
   );
