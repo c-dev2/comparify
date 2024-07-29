@@ -32,10 +32,10 @@ export default function Home() {
         // Makes all 3 API calls, then stores the results into their respective states
         const ebayResults = await fetchEbayProducts(query.trim());
         const bestBuyResults = await fetchBestBuyProducts(query.trim());
-        // const amazonResults = await fetchAmazonProducts(query.trim()); // Comment out this line to prevent Amazon searches
+        const amazonResults = await fetchAmazonProducts(query.trim()); // Comment out this line to prevent Amazon searches
         setEbayProducts(ebayResults);
         setBestBuyProducts(bestBuyResults);
-        // setAmazonProducts(amazonResults); // Comment out this line to prevent Amazon searches
+        setAmazonProducts(amazonResults); // Comment out this line to prevent Amazon searches
       } catch (err) {
         setError(err.message); // Catch any errors
       } finally {
