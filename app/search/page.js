@@ -32,15 +32,24 @@ export default function Home() {
         // Makes all 3 API calls, then stores the results into their respective states
         const ebayResults = await fetchEbayProducts(query.trim());
         const bestBuyResults = await fetchBestBuyProducts(query.trim());
-        const amazonResults = await fetchAmazonProducts(query.trim()); // Comment out this line to prevent Amazon searches
+        // const amazonResults = await fetchAmazonProducts(query.trim()); // Comment out this line to prevent Amazon searches
         setEbayProducts(ebayResults);
         setBestBuyProducts(bestBuyResults);
-        setAmazonProducts(amazonResults); // Comment out this line to prevent Amazon searches
+        // setAmazonProducts(amazonResults); // Comment out this line to prevent Amazon searches
       } catch (err) {
         setError(err.message); // Catch any errors
       } finally {
         setLoading(false); // Once the products are retrieved, stop displaying "Loading..."
       }
+
+      // Catch if there are no products returned from any source
+      if (ebayProducts.length == 0 && bestBuyProducts.length == 0 && amazonProducts.length == 0) {
+        setError("No products returned for your search '" + query + "', please try another one!");
+      }
+    } else {
+      // Catch when there is just whitespace in the search query
+      setError("Please enter a value in the search bar");
+      setLoading(false);
     }
   };
 
