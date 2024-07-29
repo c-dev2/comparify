@@ -56,7 +56,6 @@
   border: 1px solid #000; /* Black border */
   border-radius: 15px; /* Rounded corners */
   padding: 20px; /* More padding */
-  margin-right: 20px; /* Add this line */
   width: 100%;
   text-align: center;
 }
